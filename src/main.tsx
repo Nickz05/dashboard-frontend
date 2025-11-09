@@ -8,10 +8,11 @@ import { ProjectProvider } from './contexts/ProjectContext.tsx';
 import { TaskProvider } from './contexts/TaskContext.tsx'; // Nodig voor feedback logica
 import './index.css';
 import {UserProvider} from "./contexts/userContext.tsx";
+import {BrowserRouter} from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-        {/* De AuthProvider moet de hoogste zijn */}
+        <BrowserRouter basename="/">
         <AuthProvider>
             {/* Project en Task Providers kunnen hieronder */}
             <ProjectProvider>
@@ -24,5 +25,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 </TaskProvider>
             </ProjectProvider>
         </AuthProvider>
+        </BrowserRouter>
     </React.StrictMode>,
 );

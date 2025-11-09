@@ -1,6 +1,6 @@
 // src/App.tsx
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 // Layout & Beveiliging
 import MainLayout from './components/layout/MainLayout';
@@ -26,7 +26,6 @@ import ForgotPasswordPage from "./pages/Auth/ForgotPassword.tsx";
 
 const App: React.FC = () => {
     return (
-        <BrowserRouter basename="/">
             <Routes>
                 {/* ✅ Publieke routes - GEEN authenticatie nodig */}
                 <Route path="/login" element={<LoginPage />} />
@@ -60,7 +59,6 @@ const App: React.FC = () => {
                 {/* 404 fallback */}
                 <Route path="*" element={<div>404 - Pagina niet gevonden</div>} />
             </Routes>
-        </BrowserRouter>
     );
 };
 
