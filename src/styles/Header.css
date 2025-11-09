@@ -1,0 +1,45 @@
+/* src/styles/Header.css */
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px; /* p-4 */
+    background-color: var(--color-bg-white);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* shadow-md */
+    z-index: 10;
+}
+
+.header-title {
+    font-size: 20px; /* text-xl */
+    font-weight: 600;
+    color: var(--color-gray-dark);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* space-x-4 */
+}
+
+.welcome-text {
+    font-size: 14px; /* text-sm */
+    font-weight: 500;
+    color: var(--color-text-normal);
+}
+
+.logout-button {
+    padding: 4px 12px; /* px-3 py-1 */
+    font-size: 14px; /* text-sm */
+    font-weight: 500;
+    color: var(--color-danger);
+    background-color: #FEF2F2; /* bg-red-50 */
+    border-radius: 8px; /* rounded-lg */
+    transition: background-color 150ms ease-in-out;
+    border: none;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background-color: #FEE2E2; /* hover:bg-red-100 */
+}

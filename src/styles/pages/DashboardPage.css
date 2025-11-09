@@ -1,0 +1,110 @@
+/* src/styles/pages/DashboardPage.css */
+@import url('../Global.css');
+
+.dashboard-container {
+    padding: var(--space-8); /* p-8 */
+    min-height: calc(100vh - 80px); /* Vangt het verschil met de header op */
+}
+
+.dashboard-title {
+    font-size: 36px; /* text-4xl */
+    font-weight: bold;
+    color: var(--color-gray-dark);
+    margin-bottom: var(--space-4); /* mb-6 */
+}
+
+.dashboard-subtitle {
+    font-size: 20px; /* text-xl */
+    color: #4F46E5; /* indigo-600 */
+    margin-bottom: 40px; /* mb-10 */
+}
+
+/* Grid Layout */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8); /* gap-8 */
+}
+/* Media Query voor grotere schermen (lg:grid-cols-3) */
+@media (min-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .status-card {
+        grid-column: span 2 / span 2;
+    }
+}
+
+/* --- Kaarten --- */
+
+.card {
+    background-color: var(--color-bg-white);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); /* shadow-lg */
+    border-radius: 12px;
+    padding: var(--space-6); /* p-6 */
+}
+
+.status-card {
+    border-left: 4px solid #4F46E5; /* border-l-4 border-indigo-500 */
+}
+
+.card-title {
+    font-size: 20px; /* text-2xl */
+    font-weight: 600;
+    color: var(--color-gray-dark);
+    margin-bottom: var(--space-4); /* mb-4 */
+}
+
+.card-content-status {
+    font-size: 18px; /* text-lg */
+    margin-bottom: var(--space-4);
+}
+
+.card-status-value {
+    font-weight: 800; /* font-extrabold */
+    font-size: 20px;
+    /* Kleuren van Status zijn dynamisch in JSX, maar als voorbeeld: */
+    /* color: #F59E0B; */
+}
+
+/* Progress Bar */
+.progress-bar-group {
+    margin-bottom: var(--space-6);
+}
+
+.progress-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-normal);
+    margin-bottom: var(--space-1);
+}
+
+.progress-bar-base {
+    width: 100%;
+    background-color: #E5E7EB; /* bg-gray-200 */
+    border-radius: 9999px;
+    height: 10px; /* h-2.5 */
+}
+
+.progress-bar-fill {
+    background-color: #4F46E5; /* bg-indigo-600 */
+    height: 10px;
+    border-radius: 9999px;
+    transition: width 500ms ease-in-out;
+}
+
+.milestone-text {
+    font-size: 16px; /* text-md */
+    color: var(--color-text-light);
+    margin-bottom: var(--space-6);
+}
+
+.quick-links a {
+    display: block;
+    color: #4F46E5; /* indigo-600 */
+    margin-bottom: var(--space-2);
+}
+.quick-links a:hover {
+    color: #3730A3; /* indigo-800 */
+}

@@ -1,0 +1,59 @@
+/* src/styles/Sidebar.css */
+
+.sidebar-container {
+    width: 256px; /* w-64 */
+    display: flex;
+    flex-direction: column;
+    padding: 16px; /* p-4 */
+    background-color: var(--color-gray-dark);
+    color: white;
+    box-shadow: 4px 0 6px -1px rgba(0, 0, 0, 0.1); /* shadow-lg */
+    flex-shrink: 0; /* Voorkomt dat de sidebar kleiner wordt */
+}
+
+.sidebar-logo {
+    font-size: 24px; /* text-2xl */
+    font-weight: bold;
+    margin-bottom: 32px; /* mb-8 */
+    color: #FACC15; /* text-yellow-400 */
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* space-y-2 */
+}
+
+.nav-item {
+    padding: 8px 12px; /* px-3 py-2 */
+    border-radius: 8px; /* rounded-lg */
+    transition: background-color 150ms ease-in-out;
+    color: #D1D5DB; /* gray-300 */
+}
+
+.nav-item:hover {
+    background-color: #374151; /* hover:bg-gray-700 */
+}
+
+.nav-item.active {
+    background-color: var(--color-primary); /* bg-yellow-500 */
+    color: #1F2937; /* text-gray-900 */
+    font-weight: 600;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 24px; /* pt-6 */
+    border-top: 1px solid #4B5563; /* border-t border-gray-700 */
+}
+
+.footer-link {
+    font-size: 12px; /* text-xs */
+    color: #9CA3AF; /* text-gray-500 */
+    display: block;
+    margin-bottom: 4px; /* mb-1 */
+}
+
+.footer-link:hover {
+    color: #D1D5DB; /* hover:text-gray-400 */
+}

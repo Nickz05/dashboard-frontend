@@ -1,0 +1,49 @@
+/* src/styles/StatusBadge.css */
+
+.status-badge {
+    padding: 4px 12px; /* px-3 py-1 */
+    font-size: 12px; /* text-xs */
+    font-weight: 600;
+    line-height: 1; /* leading-none */
+    border-radius: 9999px; /* rounded-full */
+    white-space: nowrap;
+    display: inline-block;
+}
+
+/* --- Varianten --- */
+
+.status-live, .status-completed, .status-paid {
+    background-color: #D1FAE5; /* bg-green-100 */
+    color: #065F46; /* text-green-800 */
+}
+
+.status-in_design, .status-development {
+    background-color: #DBEAFE; /* bg-blue-100 */
+    color: #1E40AF; /* text-blue-800 */
+}
+
+.status-waiting_for_content, .status-needs_review {
+    background-color: #FEE2E2; /* bg-red-100 */
+    color: #991B1B; /* text-red-800 */
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.status-concept, .status-pending, .status-overdue {
+    background-color: #FEF9C3; /* bg-yellow-100 */
+    color: #854D0E; /* text-yellow-800 */
+}
+
+.status-staging {
+    background-color: #EDE9FE; /* bg-purple-100 */
+    color: #5B21B6; /* text-purple-800 */
+}
+
+.status-default {
+    background-color: #F3F4F6; /* bg-gray-100 */
+    color: #374151; /* text-gray-800 */
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .5; }
+}

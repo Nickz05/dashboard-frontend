@@ -1,0 +1,36 @@
+/* src/styles/Global.css - Aangevuld met layout variabelen */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    /* Zomer Dev Kleuren (Yellow Primary) */
+    --color-primary: #EAB308; /* yellow-500 */
+    --color-primary-hover: #D9A407; /* yellow-600 */
+
+    /* Voor de gradient in de illustratie, een warme tint */
+    --color-secondary: #F59E0B; /* amber-500 of orange-500 */
+
+    /* Status kleuren */
+    --color-danger: #DC2626; /* red-600 */
+    --color-danger-hover: #B91C1C; /* red-700 */
+
+    /* Achtergrond & Grijs Tinten */
+    --color-background: #F9FAFB; /* gray-50 - Standaard pagina-achtergrond */
+    --color-bg-light: #F3F4F6; /* gray-100 - Net iets donkerder dan background */
+    --color-bg-white: #FFFFFF; /* Wit voor de login-kaart */
+
+    --color-gray-dark: #1F2937; /* gray-800 - Hoofdtekst/Titel */
+    --color-text-light: #6B7280; /* gray-500 - Subtitels/Separators */
+    --color-border: #E5E7EB; /* gray-200 - Randen en lijnen */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: var(--color-background);
+}
+
+a {
+    text-decoration: none;
+}

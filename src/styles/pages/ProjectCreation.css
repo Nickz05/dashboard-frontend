@@ -1,0 +1,25 @@
+/* src/styles/pages/ProjectCreation.css */
+
+.project-creation-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--space-8);
+}
+
+.project-creation-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding: var(--space-6);
+    background-color: var(--color-bg-white);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.project-creation-form h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: var(--space-4);
+    border-bottom: 1px solid #E5E7EB;
+    padding-bottom: var(--space-2);
+}

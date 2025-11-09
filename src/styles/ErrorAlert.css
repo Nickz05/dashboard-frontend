@@ -1,0 +1,45 @@
+/* Stijl voor de ErrorAlert component */
+
+.error-alert {
+    /* Layout */
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+
+    /* Visuele stijl (opvallend rood/geel) */
+    background-color: #fff3cd; /* Lichtgele achtergrond */
+    border: 1px solid #ffeeba; /* Donkerder gele rand */
+    color: #856404; /* Donkergele tekstkleur */
+
+    /* Ruimte en afronding */
+    padding: 12px 20px;
+    margin-bottom: 20px; /* Ruimte onder de alert */
+    border-radius: 8px; /* Zachte hoeken */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+    /* Animatie om de alert mooi te laten verschijnen */
+    opacity: 0;
+    animation: fadeInError 0.3s ease-out forwards;
+}
+
+.error-alert-icon {
+    font-size: 1.2em;
+    padding-top: 2px; /* Lijn de icoon uit met de tekst */
+}
+
+.error-alert-message {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* Styling voor de 'Oeps!' vetgedrukte tekst in de message */
+.error-alert-message strong {
+    font-weight: 700;
+    margin-right: 5px;
+}
+
+@keyframes fadeInError {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

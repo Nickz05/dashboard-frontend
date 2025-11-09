@@ -1,0 +1,50 @@
+/* src/styles/pages/UserManagement.css */
+@import url('../pages/ProjectsOverview.css'); /* Hergebruik van de tabelstijlen */
+
+.user-management-container {
+    padding: var(--space-8);
+}
+
+.user-management-actions {
+    margin-bottom: var(--space-6);
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* De tabel styling is geïmporteerd vanuit ProjectsOverview.css */
+.user-management-table-wrapper {
+    /* Hergebruikt .projects-overview-table-wrapper */
+}
+.role-badge {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.role-admin {
+    background-color: #FEF3C7; /* Licht geel */
+    color: var(--color-primary-hover);
+}
+
+.role-client {
+    background-color: #E0F2F1; /* Licht groen/blauw */
+    color: #047871; /* Teal */
+}
+
+/* Knoppen binnen de tabel hebben een kleine marge nodig */
+.action-link {
+    margin: 0;
+    padding: 6px 10px;
+    font-size: 13px;
+    height: auto;
+
+}
+
+.delete-btn{
+    margin-left: 10px;
+}
+
+.create-user-btn {
+    margin-bottom: 20px;
+}

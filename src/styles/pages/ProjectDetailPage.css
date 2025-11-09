@@ -1,0 +1,27 @@
+/* src/styles/pages/ProjectDetailPage.css */
+
+.project-detail-container {
+    gap: var(--space-8);
+}
+
+.project-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #E5E7EB;
+    padding-bottom: var(--space-4);
+}
+
+.project-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+}
+@media (min-width: 1024px) {
+    .project-detail-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .detail-column-right {
+        grid-column: span 2 / span 2;
+    }
+}

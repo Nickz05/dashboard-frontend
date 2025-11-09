@@ -1,0 +1,59 @@
+/* src/styles/Button.css */
+
+.button {
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 150ms ease-in-out;
+    cursor: pointer;
+    border: none;
+    line-height: 1.25;
+}
+
+.button:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(234, 179, 8, 0.5); /* focus:ring-yellow-500 */
+}
+
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.button-primary {
+    background-color: var(--color-primary);
+    color: #1F2937; /* donkergrijs */
+}
+.button-primary:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+}
+
+.button-secondary {
+    background-color: #E5E7EB; /* gray-200 */
+    color: #374151; /* gray-800 */
+}
+.button-secondary:hover:not(:disabled) {
+    background-color: #D1D5DB; /* gray-300 */
+}
+
+.button-danger {
+    background-color: var(--color-danger);
+    color: white;
+}
+.button-danger:hover:not(:disabled) {
+    background-color: var(--color-danger-hover);
+}
+
+/* Spinner styling (vereenvoudigd) */
+.button .spinner {
+    animation: spin 1s linear infinite;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    color: currentColor;
+    fill: currentColor;
+}
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

@@ -1,0 +1,38 @@
+/* src/styles/pages/ProjectTimeline.css */
+
+.timeline-container {
+    padding: var(--space-2);
+}
+
+.timeline-list {
+    position: relative;
+    border-left: 2px solid #E5E7EB;
+    margin-left: 12px;
+    padding-left: 12px;
+}
+
+.timeline-item {
+    margin-bottom: var(--space-6);
+    margin-left: 24px;
+    position: relative;
+}
+
+.timeline-item-icon {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: #FEF3C7; /* yellow-100 */
+    border-radius: 50%;
+    left: -35px; /* offset van de list margin en border */
+    top: 0;
+    border: 8px solid var(--color-bg-white); /* ring-8 ring-white */
+}
+
+.timeline-item-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-gray-dark);
+}

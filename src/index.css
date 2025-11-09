@@ -1,0 +1,23 @@
+/* src/index.css */
+
+/* 1. Global Variabelen en Reset MOETEN EERST */
+@import url('./styles/Global.css');
+@import url('./App.css');
+
+/* 2. Layout Componenten */
+@import url('./styles/Header.css');
+@import url('./styles/Sidebar.css');
+@import url('./styles/MainLayout.css');
+
+/* 3. UI Componenten */
+@import url('./styles/Button.css');
+@import url('./styles/Input.css');
+@import url('./styles/LoadingSpinner.css');
+@import url('./styles/StatusBadge.css');
+
+/* 4. Pagina's (hier kan ProjectsOverview.css nu werken zonder eigen @import) */
+@import url('./styles/pages/DashboardPage.css');
+@import url('./styles/pages/LoginPage.css');
+/* ... voeg hier alle andere pagina CSS toe ... */
+@import url('./styles/pages/ProjectsOverview.css');
+/* ... */

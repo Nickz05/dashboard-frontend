@@ -1,0 +1,19 @@
+/* src/styles/App.css */
+
+/* Plaats hier eventuele app-brede, niet-component-specifieke stijlen */
+
+/* Voorbeeld: Basis Card Styling die je overal kunt gebruiken */
+.card {
+  background-color: var(--color-bg-white);
+  padding: var(--space-6);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); /* shadow-md */
+}
+
+/* Voorbeeld: Pagina Titel */
+.page-title {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--space-4);
+}

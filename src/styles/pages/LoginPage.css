@@ -1,0 +1,205 @@
+/* src/styles/pages/LoginPage.css - Aangepaste Split-Screen Versie */
+@import url('../Global.css');
+
+/* --- LAYOUT CONTAINER --- */
+.login-page-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-bg-light); /* Lichte achtergrond */
+    padding: 20px;
+}
+
+.login-content-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 1100px; /* Grotere container voor split-screen */
+    min-height: 600px;
+    background-color: var(--color-bg-white);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden; /* Zorgt dat alles binnen de border-radius blijft */
+}
+
+/* --- LINKER KANT: FORMULIER --- */
+.login-form-side {
+    flex: 1; /* Neemt gelijke ruimte in op desktop */
+    padding: 60px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-title {
+    font-size: 32px; /* Groter en prominenter */
+    font-weight: 700;
+    color: var(--color-gray-dark);
+    text-align: left;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.login-subtitle {
+    font-size: 16px;
+    text-align: left;
+    color: var(--color-text-light);
+    margin-bottom: 30px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* space-y-3 */
+}
+
+.login-main-button {
+    margin-top: 16px;
+}
+
+/* --- SOCIALE LOGINS STIJLEN --- */
+.login-social-separator {
+    text-align: center;
+    margin: 20px 0 15px;
+    font-size: 14px;
+    color: var(--color-text-light);
+    position: relative;
+}
+
+.login-social-separator::before,
+.login-social-separator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 30%;
+    height: 1px;
+    background-color: var(--color-border);
+}
+
+.login-social-separator::before {
+    left: 0;
+}
+
+.login-social-separator::after {
+    right: 0;
+}
+
+.login-social-button {
+    margin-bottom: 10px;
+    justify-content: center;
+}
+
+/* Speciale kleuren voor social buttons (optioneel) */
+.login-social-button.google {
+    color: var(--color-gray-dark);
+    border: 1px solid var(--color-border);
+}
+.login-social-button.google:hover {
+    background-color: var(--color-bg-light);
+}
+
+.login-social-button.facebook {
+    color: #4267B2; /* Facebook Blauw */
+    border: 1px solid #4267B2;
+}
+.login-social-button.facebook:hover {
+    background-color: #F0F2F5; /* Zeer lichtgrijze hover */
+}
+
+.login-forgot-password-link {
+    text-align: center;
+    padding-top: 15px;
+}
+
+.login-forgot-password-link a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-primary);
+    transition: color 150ms ease-in-out;
+}
+
+.login-forgot-password-link a:hover {
+    color: var(--color-primary-hover);
+}
+
+/* --- ERROR BERICHT --- */
+.login-error {
+    padding: 10px;
+    font-size: 14px;
+    color: var(--color-danger);
+    background-color: #FEF2F2;
+    border: 1px solid var(--color-danger);
+    border-radius: 6px;
+    text-align: center;
+}
+
+
+/* --- RECHTER KANT: ILLUSTRATIE/AFBEELDING --- */
+.login-illustration-side {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Gebruik de primaire kleur van Zomer Dev voor de achtergrond */
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    position: relative;
+    padding: 20px; /* Interne padding voor de kaart */
+}
+
+.illustration-card {
+    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparante kaart */
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.login-illustration-image {
+    width: 100%;
+    height: 100%; /* Vult de volledige hoogte van de ouder-kaart */
+    object-fit: cover; /* Zorgt ervoor dat het beeld niet wordt vervormd, maar de container vult (kan bijsnijden) */
+
+    border-radius: 8px;
+    display: block;
+}
+
+/* BELANGRIJK: Zorg dat de ouder-kaart ook de volledige hoogte pakt */
+.illustration-card {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Zorgt dat de kaart de volle breedte vult */
+    height: 100%; /* Zorgt dat de kaart de volle hoogte vult */
+}
+.login-logo {
+    width: auto; /* Behoudt de breedte-verhouding */
+    max-height: 50px; /* Bepaal de hoogte van het logo */
+    max-width: 200px; /* Maximale breedte */
+    margin: 0 auto 30px auto; /* Centreer het logo en voeg wat ruimte toe eronder */
+    display: block; /* Zorgt dat margin: auto werkt voor centrering */
+}
+
+/* --- RESPONSIVITEIT --- */
+@media (max-width: 950px) {
+    .login-content-wrapper {
+        flex-direction: column;
+        max-width: 450px; /* Enkele kolom, smaller maken */
+        min-height: auto;
+    }
+
+    .login-illustration-side {
+        display: none; /* Verberg de illustratie op kleinere schermen */
+    }
+
+    .login-form-side {
+        padding: 40px 30px;
+    }
+}

@@ -1,0 +1,22 @@
+/* src/styles/pages/FileManagementPage.css */
+
+.file-management-container {
+    padding: var(--space-4);
+}
+
+.file-list {
+    margin-top: var(--space-6);
+}
+
+/* Voorbeeld styling voor de upload zone */
+.dropzone {
+    border: 2px dashed #D1D5DB;
+    border-radius: 8px;
+    padding: 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 150ms;
+}
+.dropzone:hover {
+    background-color: #F3F4F6;
+}

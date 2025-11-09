@@ -1,0 +1,38 @@
+/* src/styles/pages/ProjectsOverview.css */
+@import url('../Global.css');
+
+.projects-overview-container {
+    gap: var(--space-6);
+}
+.projects-overview-table-wrapper {
+    overflow-x: auto;
+    border-bottom: 1px solid #E5E7EB;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.projects-overview-table {
+    min-width: 100%;
+    border-collapse: collapse;
+}
+
+.projects-overview-table thead {
+    background-color: #F9FAFB;
+}
+
+.projects-overview-table th {
+    padding: 12px 24px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-light);
+    text-transform: uppercase;
+}
+
+.projects-overview-table td {
+    padding: 16px 24px;
+    white-space: nowrap;
+    font-size: 14px;
+    color: var(--color-text-normal);
+    border-bottom: 1px solid #E5E7EB;
+}

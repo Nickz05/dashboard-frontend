@@ -1,0 +1,42 @@
+/* src/styles/LoadingSpinner.css */
+
+.spinner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    border-radius: 50%;
+    border-style: solid;
+    border-color: #E5E7EB; /* border-r-gray-200 border-b-gray-200 */
+    border-top-color: transparent !important; /* border-t-transparent */
+}
+
+/* Spinner Kleur (Color prop in component) */
+.spinner.color-yellow {
+    border-color: #FEF3C7;
+    border-right-color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+/* Let op: Voor deze aanpak is de 'color' prop in de component wat lastiger te vertalen.
+   We laten de CSS de standaard kleur bepalen en gebruiken de JS voor aanpassing. */
+
+
+/* Groottes */
+.spinner.sm {
+    height: 20px; /* h-5 */
+    width: 20px; /* w-5 */
+    border-width: 2px; /* border-2 */
+}
+.spinner.md {
+    height: 32px; /* h-8 */
+    width: 32px; /* w-8 */
+    border-width: 3px; /* border-3 (aangepast van Tailwind, border-3 bestaat niet) */
+}
+.spinner.lg {
+    height: 40px; /* h-10 */
+    width: 40px; /* w-10 */
+    border-width: 4px; /* border-4 */
+}
