@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 🚀 Configuratie van de basis-URL van de backend
 // Omdat je server op poort 5000 draait (zoals gedefinieerd in server.ts)
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'api.dashboard.nickzomer.com';
 
 // Maak een custom Axios instantie aan
 const api = axios.create({
@@ -12,10 +12,7 @@ const api = axios.create({
     },
 });
 
-/**
- * Axios Request Interceptor: Voegt de JWT-token toe aan de headers van elk verzoek
- * Dit is cruciaal voor de authMiddleware op de backend
- */
+
 api.interceptors.request.use(
     (config) => {
         // 1. Haal de token op uit de lokale opslag (waar deze wordt bewaard na inloggen)

@@ -1,45 +1,58 @@
 // src/components/ui/StatusBadge.tsx
 
 import React from 'react';
-import '../../styles/StatusBadge.css'; // Importeer de CSS
+import { ProjectStatus } from '../../types/project';
+import '../../styles/StatusBadge.css';
 
 interface StatusBadgeProps {
-    status: string; // Bijv. 'LIVE', 'WAITING_FOR_CONTENT', 'PENDING'
+    status: ProjectStatus;
+    size?: 'sm' | 'md' | 'lg';
 }
 
-// Functie om de juiste CSS-klasse te selecteren op basis van status
-const getStatusClass = (status: string): string => {
-    switch (status.toUpperCase().replace(/\s/g, '_')) {
-        case 'LIVE':
-        case 'COMPLETED':
-        case 'PAID':
-            return 'status-live';
-        case 'IN_DESIGN':
-        case 'DEVELOPMENT':
-            return 'status-in_design';
-        case 'WAITING_FOR_CONTENT':
-        case 'NEEDS_REVIEW':
-            return 'status-waiting_for_content';
-        case 'CONCEPT':
-        case 'PENDING':
-        case 'OVERDUE':
-            return 'status-pending';
-        case 'STAGING':
-            return 'status-staging';
-        default:
-            return 'status-default';
-    }
-};
+const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = 'md' }) => {
+    const getStatusConfig = (status: ProjectStatus) => {
+        const configs = {
+            [ProjectStatus.CONCEPT]: {
+                label: 'Concept',
+                className: 'status-concept',
+                icon: '📝'
+            },
+            [ProjectStatus.IN_DESIGN]: {
+                label: 'In Design',
+                className: 'status-design',
+                icon: '🎨'
+            },
+            [ProjectStatus.WAITING_FOR_CONTENT]: {
+                label: 'Wacht op Content',
+                className: 'status-waiting',
+                icon: '⏳'
+            },
+            [ProjectStatus.DEVELOPMENT]: {
+                label: 'In Development',
+                className: 'status-development',
+                icon: '⚡'
+            },
+            [ProjectStatus.STAGING]: {
+                label: 'Staging',
+                className: 'status-staging',
+                icon: '🚀'
+            },
+            [ProjectStatus.LIVE]: {
+                label: 'Live',
+                className: 'status-live',
+                icon: '✅'
+            }
+        };
 
-const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
-    const statusClass = getStatusClass(status);
+        return configs[status] || { label: status, className: 'status-default', icon: '•' };
+    };
+
+    const config = getStatusConfig(status);
 
     return (
-        <span
-            className={`status-badge ${statusClass}`}
-        >
-            {/* Vervang underscores door spaties voor weergave */}
-            {status.replace(/_/g, ' ')}
+        <span className={`status-badge status-${size} ${config.className}`}>
+            <span className="status-icon">{config.icon}</span>
+            <span className="status-label">{config.label}</span>
         </span>
     );
 };

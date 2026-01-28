@@ -8,6 +8,7 @@ import '../../styles/pages/ResetPasswordPage.css';
 import companyLogo from '../../assets/images/logo_volledig.png';
 
 const ResetPasswordPage: React.FC = () => {
+    // Hooks worden altijd bovenaan de component aangeroepen
     const [searchParams] = useSearchParams();
     const token = searchParams.get('token');
     const navigate = useNavigate();
@@ -65,7 +66,7 @@ const ResetPasswordPage: React.FC = () => {
         }
     };
 
-    // Als er geen token is
+    // Als er geen token is, wordt de component hier vroegtijdig teruggegeven (early return)
     if (!token) {
         return (
             <div className="reset-password-container">
@@ -81,6 +82,7 @@ const ResetPasswordPage: React.FC = () => {
         );
     }
 
+    // Hoofd render
     return (
         <div className="reset-password-container">
             <div className="reset-password-card">

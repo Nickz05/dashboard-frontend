@@ -8,6 +8,7 @@ import '../../styles/pages/ForgotPasswordPage.css';
 import companyLogo from '../../assets/images/logo_volledig.png';
 
 const ForgotPasswordPage: React.FC = () => {
+    // ✅ Alle Hooks worden hier aan het begin van de functie aangeroepen
     const [email, setEmail] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
@@ -51,6 +52,7 @@ const ForgotPasswordPage: React.FC = () => {
                     Voer uw e-mailadres in en wij sturen u een link om uw wachtwoord te resetten.
                 </p>
 
+                {/* Voorwaardelijke rendering op basis van 'success' staat */}
                 {success ? (
                     <div className="success-message">
                         <div className="success-icon">✓</div>

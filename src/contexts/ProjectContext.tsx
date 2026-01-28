@@ -17,15 +17,13 @@ interface ProjectCreationData {
     description?: string;
     timeline?: string;
 }
-
 interface ProjectContextType {
     projects: Project[];
-    // Gebruik de naam uit de interface (currentProject)
     currentProject: Project | null;
+    setCurrentProject: React.Dispatch<React.SetStateAction<Project | null>>;
     isLoadingProjects: boolean;
     error: string | null;
     fetchProjects: () => Promise<void>;
-    // Gebruik de naam uit de interface (fetchCurrentProject)
     fetchCurrentProject: () => Promise<void>;
     fetchProjectDetails: (id: number) => Promise<void>;
     createProject: (data: ProjectCreationData) => Promise<void>;
@@ -175,6 +173,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         projects,
         currentProject, // FIX: Exporteer currentProject
         isLoadingProjects,
+        setCurrentProject,
         error,
         fetchProjects,
         fetchCurrentProject, // FIX: Exporteer fetchCurrentProject

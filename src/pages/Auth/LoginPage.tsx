@@ -15,7 +15,8 @@ const LoginPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const { login, isAuthenticated, user } = useAuth();
+    // Haal de nieuwe logout state en functie op
+    const { login, isAuthenticated, user, logoutReason, clearLogoutReason } = useAuth();
     const navigate = useNavigate();
 
     const handleAuthRedirect = () => {
@@ -33,6 +34,16 @@ const LoginPage: React.FC = () => {
             handleAuthRedirect();
         }
     }, [isAuthenticated, user?.mustChangePassword, navigate]);
+
+    // ✅ NIEUWE CODE: Toon de automatische uitlog reden als error
+    useEffect(() => {
+        if (logoutReason) {
+            // Stel de error in met de reden uit de AuthContext
+            setError(logoutReason);
+            // Wis de reden in de context, zodat de melding niet blijft staan bij refresh
+            clearLogoutReason();
+        }
+    }, [logoutReason, clearLogoutReason]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

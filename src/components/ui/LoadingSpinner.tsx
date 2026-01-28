@@ -26,7 +26,6 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 'md', color = 'v
                 style={spinnerStyle}
                 role="status"
             >
-                <span className="sr-only">Laden...</span>
             </div>
         </div>
     );

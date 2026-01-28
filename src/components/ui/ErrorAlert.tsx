@@ -31,9 +31,8 @@ const ErrorAlert: React.FC<ErrorAlertProps> = ({ message }) => {
 
     return (
         <div className="error-alert" role="alert">
-            <span className="error-alert-icon">⚠️</span>
             <p className="error-alert-message">
-                <strong>Oeps!</strong> {translatedMessage}
+                <strong>Foutje!</strong> {translatedMessage}
             </p>
         </div>
     );

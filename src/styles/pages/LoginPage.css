@@ -181,7 +181,7 @@
 }
 .login-logo {
     width: auto; /* Behoudt de breedte-verhouding */
-    max-height: 50px; /* Bepaal de hoogte van het logo */
+    max-height: 250px; /* Bepaal de hoogte van het logo */
     max-width: 200px; /* Maximale breedte */
     margin: 0 auto 30px auto; /* Centreer het logo en voeg wat ruimte toe eronder */
     display: block; /* Zorgt dat margin: auto werkt voor centrering */
