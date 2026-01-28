@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 🚀 Configuratie van de basis-URL van de backend
 // Omdat je server op poort 5000 draait (zoals gedefinieerd in server.ts)
-const API_BASE_URL = 'api.dashboard.nickzomer.com';
+const API_BASE_URL = 'https://api.dashboard.nickzomer.com/';
 
 // Maak een custom Axios instantie aan
 const api = axios.create({
