@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
 import '../../styles/pages/FileManagementPage.css';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+import api from "../../api/api.ts";
 
 interface FileData {
     id: number;
@@ -35,39 +33,28 @@ const FileManagementPage: React.FC = () => {
     const [isLoadingProjects, setIsLoadingProjects] = useState(true);
     const { token } = useAuth();
 
-    // Haal alle projecten op bij mount
     useEffect(() => {
         void fetchProjects();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // Haal bestanden op als project geselecteerd wordt
     useEffect(() => {
         if (selectedProjectId) {
             void fetchFiles();
         } else {
             setFiles([]);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedProjectId]);
 
     const fetchProjects = async () => {
         if (!token) {
-            console.log('Geen token, kan projecten niet ophalen');
             setIsLoadingProjects(false);
             return;
         }
 
         try {
-            console.log('📋 Projecten ophalen...');
-            const response = await axios.get(
-                `${API_URL}/projects`,
-                { headers: { 'Authorization': `Bearer ${token}` } }
-            );
-            console.log('✅ Projecten opgehaald:', response.data.length, 'projecten');
+            const response = await api.get('projects');
             setProjects(response.data);
 
-            // Auto-select eerste project als er maar 1 is
             if (response.data.length === 1) {
                 setSelectedProjectId(response.data[0].id);
             }
@@ -87,12 +74,7 @@ const FileManagementPage: React.FC = () => {
 
         setIsLoading(true);
         try {
-            console.log('📥 Bestanden ophalen voor project:', selectedProjectId);
-            const response = await axios.get(
-                `${API_URL}/files/projects/${selectedProjectId}`,
-                { headers: { 'Authorization': `Bearer ${token}` } }
-            );
-            console.log('✅ Bestanden opgehaald:', response.data.length, 'bestanden');
+            const response = await api.get(`files/projects/${selectedProjectId}`);
             setFiles(response.data);
         } catch (error: any) {
             console.error('❌ Fout bij ophalen bestanden:', error);
@@ -119,14 +101,11 @@ const FileManagementPage: React.FC = () => {
         }
 
         const file = fileList[0];
-
         const maxSize = 50 * 1024 * 1024;
         if (file.size > maxSize) {
             alert(`Bestand is te groot (${(file.size / 1024 / 1024).toFixed(2)}MB). Maximum is 50MB.`);
             return;
         }
-
-        console.log('📤 Start upload naar project', selectedProjectId, ':', file.name);
 
         const formData = new FormData();
         formData.append('file', file);
@@ -135,23 +114,21 @@ const FileManagementPage: React.FC = () => {
         setIsUploading(true);
 
         try {
-            await axios.post(
-                `${API_URL}/files/projects/${selectedProjectId}/upload`,
+            await api.post(
+                `files/projects/${selectedProjectId}/upload`,
                 formData,
-                { headers: { 'Authorization': `Bearer ${token}` } }
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
             );
 
-            console.log('✅ Upload succesvol naar project', selectedProjectId);
             alert(`Bestand ${file.name} is geüpload naar project!`);
             await fetchFiles();
 
         } catch (error: any) {
-            console.error('❌ Upload fout:', error);
-
-            let errorMessage = 'Er ging iets mis bij het uploaden.';
-            if (error.response) {
-                errorMessage = error.response.data?.message || `Error ${error.response.status}`;
-            }
+            const errorMessage = error.response?.data?.message || 'Er ging iets mis bij het uploaden.';
             alert(`Upload mislukt: ${errorMessage}`);
         } finally {
             setIsUploading(false);
@@ -189,12 +166,10 @@ const FileManagementPage: React.FC = () => {
 
     return (
         <div className="file-management-container">
-            {/* Page Header - Altijd zichtbaar */}
             <div className="page-header">
                 <h1 className="main-page-title">📂 Bestanden & Content Beheer</h1>
             </div>
 
-            {/* Project Selector */}
             <div className="project-selector-card">
                 <h2 className="selector-title">Kies een Project</h2>
 
@@ -232,10 +207,8 @@ const FileManagementPage: React.FC = () => {
                 )}
             </div>
 
-            {/* Upload Zone - alleen tonen als project geselecteerd */}
             {selectedProjectId ? (
                 <>
-                    {/* Project Header */}
                     <div className="current-project-header">
                         <div>
                             <h2 className="current-project-title">
@@ -278,6 +251,7 @@ const FileManagementPage: React.FC = () => {
                         <button
                             onClick={fetchFiles}
                             disabled={isLoading}
+                            className="refresh-btn"
                         >
                             {isLoading ? 'Laden...' : '🔄 Ververs'}
                         </button>
@@ -300,7 +274,7 @@ const FileManagementPage: React.FC = () => {
                         <div className="file-grid">
                             {files.map(file => (
                                 <div key={file.id} className="file-card">
-                                    <div>
+                                    <div className="file-card-info">
                                         <p className="font-medium">{file.fileName}</p>
                                         <p className="text-sm text-gray-500">
                                             {getFileTypeLabel(file.fileType, file.fileName)}
@@ -315,14 +289,25 @@ const FileManagementPage: React.FC = () => {
                                             {formatDate(file.createdAt)}
                                         </p>
                                     </div>
-                                    <a
-                                        href={file.fileUrl}
-                                        download={file.fileName}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        Download
-                                    </a>
+                                    <div className="file-actions-container">
+                                        <a
+                                            href={file.fileUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="file-action-btn view-btn"
+                                        >
+                                            👁️ Bekijk
+                                        </a>
+                                        <a
+                                            href={file.fileUrl}
+                                            download={file.fileName}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="file-action-btn download-btn"
+                                        >
+                                             Download
+                                        </a>
+                                    </div>
                                 </div>
                             ))}
                         </div>

@@ -1,11 +1,9 @@
 // src/contexts/FileContext.tsx
 
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import axios from 'axios';
+import React, { createContext, useContext, useState, useCallback, useMemo } from 'react';
+import api from '../api/api';
 import { useAuth } from './AuthContext';
 import { FileRecord, Invoice } from '../types/file';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 // --- Types ---
 interface FileContextType {
@@ -36,31 +34,15 @@ export const FileProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [isLoadingFiles, setIsLoadingFiles] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const getConfig = (isMultipart = false) => {
-        if (!token) throw new Error("Niet geautoriseerd: Token ontbreekt.");
-        const headers = {
-            Authorization: `Bearer ${token}`,
-            // De browser stelt Content-Type automatisch in bij FormData, dus we laten deze weg.
-            ...(isMultipart ? {} : { 'Content-Type': 'application/json' })
-        };
-        return { headers };
-    };
-
     // Haalt alle bestanden en facturen voor een project op
     const fetchFilesAndInvoices = useCallback(async (projectId: number) => {
         if (!token) return;
         setIsLoadingFiles(true);
         setError(null);
         try {
-            // Backend route GET /api/files/:projectId
-            const response = await axios.get<{ files: FileRecord[], invoices: Invoice[] }>(
-                `${API_URL}/files/${projectId}`,
-                getConfig()
-            );
-
+            const response = await api.get<{ files: FileRecord[], invoices: Invoice[] }>(`/files/${projectId}`);
             setFiles(response.data.files || []);
             setInvoices(response.data.invoices || []);
-
         } catch (err: any) {
             setError(err.response?.data?.message || 'Kon bestanden niet laden.');
         } finally {
@@ -68,23 +50,18 @@ export const FileProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     }, [token]);
 
-    // CLIENT: Uploaden van bestanden (logo's, content)
+    // CLIENT: Uploaden van bestanden
     const uploadClientFile = useCallback(async (projectId: number, file: File) => {
-        if (!token) throw new Error("Niet geautoriseerd.");
-
         setIsLoadingFiles(true);
         setError(null);
 
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('projectId', String(projectId));
+        formData.append('projectId', projectId.toString());
 
         try {
-            // Backend route POST /api/files/upload
-            const response = await axios.post<FileRecord>(`${API_URL}/files/upload`, formData, getConfig(true));
-
+            const response = await api.post<FileRecord>('/files/upload', formData);
             setFiles(prev => [...prev, response.data]);
-
         } catch (err: any) {
             const message = err.response?.data?.message || 'Fout bij bestandsupload.';
             setError(message);
@@ -92,17 +69,17 @@ export const FileProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } finally {
             setIsLoadingFiles(false);
         }
-    }, [token]);
+    }, []);
 
-
-    const contextValue: FileContextType = {
+    // FIX: De useMemo was niet correct gedefinieerd
+    const contextValue = useMemo(() => ({
         files,
         invoices,
         isLoadingFiles,
         error,
         fetchFilesAndInvoices,
         uploadClientFile,
-    };
+    }), [files, invoices, isLoadingFiles, error, fetchFilesAndInvoices, uploadClientFile]);
 
     return (
         <FileContext.Provider value={contextValue}>

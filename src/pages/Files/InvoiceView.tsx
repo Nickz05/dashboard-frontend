@@ -26,7 +26,7 @@ const InvoiceView: React.FC = () => {
                         </div>
                         <div className="flex items-center space-x-4">
                             <p className="invoice-amount">€ {invoice.amount.toFixed(2)}</p>
-                            <StatusBadge status={invoice.status} />
+                            <StatusBadge status={invoice.status as any} />
                             <a href={invoice.fileUrl} target="_blank" rel="noopener noreferrer" className="text-yellow-600 hover:text-yellow-700">
                                 Download
                             </a>

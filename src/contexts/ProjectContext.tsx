@@ -1,14 +1,8 @@
-// src/contexts/ProjectContext.tsx
-
 import React, { createContext, useContext, useState, useCallback, useMemo } from 'react';
-import axios from 'axios';
+import api from '../api/api';
 import { Project, ProjectStatus } from '../types/project';
 import { useAuth } from './AuthContext';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-const getUpdatedTimestamp = () => new Date().toISOString();
-
-// --- Types ---
 interface ProjectCreationData {
     title: string;
     clientId: number;
@@ -17,6 +11,7 @@ interface ProjectCreationData {
     description?: string;
     timeline?: string;
 }
+
 interface ProjectContextType {
     projects: Project[];
     currentProject: Project | null;
@@ -30,10 +25,8 @@ interface ProjectContextType {
     updateProjectStatus: (id: number, status: ProjectStatus) => Promise<void>;
 }
 
-// --- Initial State & Context aanmaken ---
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 
-// --- Custom Hook ---
 export const useProjects = () => {
     const context = useContext(ProjectContext);
     if (context === undefined) {
@@ -42,32 +35,20 @@ export const useProjects = () => {
     return context;
 };
 
-// --- Provider Component ---
 export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { token, user } = useAuth();
     const [projects, setProjects] = useState<Project[]>([]);
-
-    // FIX 1: Hernoem state van 'project' naar 'currentProject'
     const [currentProject, setCurrentProject] = useState<Project | null>(null);
-
     const [isLoadingProjects, setIsLoadingProjects] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const getConfig = () => {
-        if (!token) throw new Error("Niet geautoriseerd: Token ontbreekt.");
-        return { headers: { Authorization: `Bearer ${token}` } };
-    };
-
-    // Ophalen van alle projecten (voor CLIENT of ADMIN)
     const fetchProjects = useCallback(async () => {
         if (!token) return;
         setIsLoadingProjects(true);
         setError(null);
         try {
-            const response = await axios.get<Project[]>(`${API_URL}/projects`, getConfig());
+            const response = await api.get<Project[]>('/projects');
             setProjects(response.data);
-
-            // OPTIONEEL: Als dit een CLIENT is, stel de eerste in als currentProject
             if (user?.role === 'CLIENT' && response.data.length > 0) {
                 setCurrentProject(response.data[0]);
             }
@@ -78,33 +59,26 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         }
     }, [token, user?.role]);
 
-    // FIX 2: Implementeer fetchCurrentProject
     const fetchCurrentProject = useCallback(async () => {
         if (!token) return;
         setIsLoadingProjects(true);
         setError(null);
         try {
-            // Dit roept de backend route GET /api/projects?current=true aan
-            const response = await axios.get<Project[]>(`${API_URL}/projects?current=true`, getConfig());
-            // Neem het eerste project als 'current'
+            const response = await api.get<Project[]>('/projects?current=true');
             setCurrentProject(response.data[0] || null);
         } catch (err: any) {
             setError('Kon actief project niet laden.');
-            console.error(err);
         } finally {
             setIsLoadingProjects(false);
         }
     }, [token]);
 
-    // Ophalen van details van één project
     const fetchProjectDetails = useCallback(async (id: number) => {
         if (!token) return;
         setIsLoadingProjects(true);
-        setCurrentProject(null); // Clear de state voordat we nieuwe details laden
         setError(null);
         try {
-            const response = await axios.get<Project>(`${API_URL}/projects/${id}`, getConfig());
-            // Gebruik 'currentProject' state om de details op te slaan
+            const response = await api.get<Project>(`/projects/${id}`);
             setCurrentProject(response.data);
         } catch (err: any) {
             setError(err.response?.data?.message || 'Kon projectdetails niet ophalen');
@@ -113,78 +87,39 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         }
     }, [token]);
 
-    // NIEUW: Functie voor aanmaken (Admin)
     const createProject = useCallback(async (data: ProjectCreationData) => {
-        if (!token || user?.role !== 'ADMIN') throw new Error("Toegang geweigerd: Admin rechten vereist.");
-
         setIsLoadingProjects(true);
         setError(null);
         try {
-            const response = await axios.post<Project>(`${API_URL}/projects`, data, getConfig());
+            const response = await api.post<Project>('/projects', data);
             setProjects(prev => [...prev, response.data]);
         } catch (err: any) {
-            const message = err.response?.data?.message || "Fout bij aanmaken project.";
-            setError(message);
-            throw new Error(message);
+            const msg = err.response?.data?.message || "Fout bij aanmaken project.";
+            setError(msg);
+            throw new Error(msg);
         } finally {
             setIsLoadingProjects(false);
         }
-    }, [token, user?.role]);
+    }, []);
 
-    // Alleen voor ADMIN: Status of Tijdlijn aanpassen
     const updateProjectStatus = useCallback(async (id: number, status: ProjectStatus) => {
-        if (!token || user?.role !== 'ADMIN') throw new Error("Toegang geweigerd: Admin rechten vereist.");
-
+        setError(null);
         try {
-            const response = await axios.put(`${API_URL}/projects/${id}`, { status }, getConfig());
-
-            const updatedTime = getUpdatedTimestamp();
-            const newStatus = response.data.status;
-
-            // Update de detailweergave
-            setCurrentProject(prev => {
-                if (!prev) return null;
-                return {
-                    ...prev,
-                    status: newStatus,
-                    updatedAt: updatedTime
-                };
-            });
-
-            // Update de overzichtsweergave
-            setProjects(prev => prev.map(p => {
-                if (p.id !== id) return p;
-                return {
-                    ...p,
-                    status: newStatus,
-                    updatedAt: updatedTime
-                } as Project;
-            }));
-
-            return response.data;
+            const response = await api.put<Project>(`/projects/${id}`, { status });
+            const updated = response.data;
+            setCurrentProject(prev => prev?.id === id ? updated : prev);
+            setProjects(prev => prev.map(p => p.id === id ? updated : p));
         } catch (err: any) {
-            const message = err.response?.data?.message || 'Fout bij updaten status';
-            setError(message);
-            throw new Error(message);
+            const msg = err.response?.data?.message || 'Fout bij updaten status';
+            setError(msg);
+            throw new Error(msg);
         }
-    }, [token, user?.role]);
+    }, []);
 
     const value = useMemo(() => ({
-        projects,
-        currentProject, // FIX: Exporteer currentProject
-        isLoadingProjects,
-        setCurrentProject,
-        error,
-        fetchProjects,
-        fetchCurrentProject, // FIX: Exporteer fetchCurrentProject
-        fetchProjectDetails,
-        updateProjectStatus,
-        createProject
+        projects, currentProject, isLoadingProjects, setCurrentProject, error,
+        fetchProjects, fetchCurrentProject, fetchProjectDetails, updateProjectStatus, createProject
     }), [projects, currentProject, isLoadingProjects, error, fetchProjects, fetchCurrentProject, fetchProjectDetails, updateProjectStatus, createProject]);
 
-    return (
-        <ProjectContext.Provider value={value}>
-            {children}
-        </ProjectContext.Provider>
-    );
+    return <ProjectContext.Provider value={value}>{children}</ProjectContext.Provider>;
 };

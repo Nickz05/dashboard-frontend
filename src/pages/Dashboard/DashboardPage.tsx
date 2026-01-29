@@ -6,6 +6,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useProjects } from '../../contexts/ProjectContext';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import '../../styles/pages/DashboardPage.css';
+import api from "../../api/api.ts";
 
 // ============= TYPES =============
 interface ProjectComment {
@@ -78,19 +79,11 @@ const DashboardPage: React.FC = () => {
             try {
                 const endpoint =
                     user?.role === 'ADMIN'
-                        ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/projects/dashboard/admin-stats`
-                        : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/projects/${currentProject?.id}/stats`;
+                        ? 'projects/dashboard/admin-stats'
+                        : `projects/${currentProject?.id}/stats`;
 
-                const response = await fetch(endpoint, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
-                    },
-                });
-
-                if (response.ok) {
-                    const data: ProjectStats = await response.json();
-                    setProjectStats(data);
-                }
+                const response = await api.get(endpoint);
+                setProjectStats(response.data);
             } catch (err) {
                 console.error('Error fetching stats:', err);
             } finally {
@@ -114,20 +107,11 @@ const DashboardPage: React.FC = () => {
 
         setIsDownloading(true);
         try {
-            const token = localStorage.getItem('token');
-            const endpoint = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/projects/admin/activity-log?startDate=${startDate}&endDate=${endDate}`;
+            const response = await api.get(
+                `projects/admin/activity-log?startDate=${startDate}&endDate=${endDate}`
+            );
 
-            const response = await fetch(endpoint, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error('Fout bij ophalen van de log data.');
-            }
-
-            const logData = await response.json();
+            const logData = response.data;
 
             if (logData.length === 0) {
                 alert("Geen activiteiten gevonden in de geselecteerde periode.");

@@ -57,7 +57,6 @@ const LoginPage: React.FC = () => {
         setIsSubmitting(true);
         try {
             await login(email, password);
-            // ✅ Bij succes wordt automatisch genavigeerd via useEffect
         } catch (err: any) {
             console.error("Login Error:", err);
 
@@ -71,7 +70,6 @@ const LoginPage: React.FC = () => {
         }
     };
 
-    // ✅ Redirect direct als al ingelogd (geen loading screen nodig)
     if (isAuthenticated) {
         return (
             <div className="login-page-container">

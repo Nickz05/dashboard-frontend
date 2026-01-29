@@ -10,6 +10,50 @@
     display: none;
 }
 
+/* File Action Buttons */
+.file-card .file-action-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.file-card .file-action-btn::after {
+    content: none !important;
+}
+
+.file-card .view-btn {
+    background: #3B82F6;
+    color: #FFFFFF;
+}
+
+.file-card .view-btn:hover {
+    background: #2563EB;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+}
+
+.file-card .download-btn {
+    margin-left: 0.5rem;
+    background: #10B981;
+    color: #FFFFFF;
+}
+
+.file-card .download-btn:hover {
+    background: #059669;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+}
+
 /* Project Selector Card */
 .project-selector-card {
     background: rgba(30, 41, 59, 0.95);
@@ -193,7 +237,7 @@
     margin-bottom: 1.75rem;
 }
 
-.outside_color{
+.outside-color {
     color: #0F172A !important;
 }
 
@@ -203,8 +247,6 @@
     font-weight: 700;
     margin: 0;
 }
-
-
 
 /* Refresh Button */
 .flex button {
@@ -319,38 +361,6 @@
     font-size: 0.875rem;
     line-height: 1.6;
     margin: 0;
-}
-
-.file-card a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.875rem 1.75rem;
-    background: #3B82F6;
-    color: #FFFFFF;
-    font-size: 0.9375rem;
-    font-weight: 700;
-    text-decoration: none;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.file-card a::after {
-    content: '↓';
-    font-size: 1.125rem;
-}
-
-.file-card a:hover {
-    background: #2563EB;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-.file-card a:active {
-    transform: translateY(0);
 }
 
 /* Empty State */

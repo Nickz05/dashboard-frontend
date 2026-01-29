@@ -29,20 +29,19 @@ const ProjectsOverview: React.FC = () => {
     const isAdmin = user?.role === 'ADMIN';
     const title = isAdmin ? 'Alle Projecten Overzicht' : 'Mijn Projecten';
 
-    // Bereken statistieken
+    // Bereken statistieken met veilige checks
     const stats = {
         total: projects.length,
         active: projects.filter(p =>
-            p.status === 'DEVELOPMENT' as ProjectStatus ||
-            p.status === 'IN_DESIGN' as ProjectStatus
+            p.status === 'DEVELOPMENT' || p.status === 'IN_DESIGN'
         ).length,
-        completed: projects.filter(p => p.status === 'LIVE' as ProjectStatus).length,
-        waiting: projects.filter(p => p.status === 'WAITING_FOR_CONTENT' as ProjectStatus).length,
-        concept: projects.filter(p => p.status === 'CONCEPT' as ProjectStatus).length
+        completed: projects.filter(p => p.status === 'LIVE').length,
+        waiting: projects.filter(p => p.status === 'WAITING_FOR_CONTENT').length,
+        concept: projects.filter(p => p.status === 'CONCEPT').length
     };
 
     const getStatusColor = (status: ProjectStatus) => {
-        const colors = {
+        const colors: Record<string, string> = {
             'CONCEPT': '#6366F1',
             'IN_DESIGN': '#EC4899',
             'WAITING_FOR_CONTENT': '#F59E0B',
@@ -69,7 +68,7 @@ const ProjectsOverview: React.FC = () => {
 
                 {isAdmin && (
                     <Link to="/admin/create-project">
-                        <Button variant="primary" >
+                        <Button variant="primary">
                             <svg className="button-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                             </svg>
@@ -88,13 +87,12 @@ const ProjectsOverview: React.FC = () => {
                         </svg>
                     </div>
                     <div className="stat-content">
-                        <p className="stat-label">Totaal Projecten</p>
+                        <p className="stat-label">Totaal</p>
                         <p className="stat-value">{stats.total}</p>
                     </div>
                 </div>
 
-                {isAdmin && (
-                    <div className="stat-card">
+                <div className="stat-card">
                     <div className="stat-icon-wrapper stat-active">
                         <svg className="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -105,7 +103,6 @@ const ProjectsOverview: React.FC = () => {
                         <p className="stat-value">{stats.active}</p>
                     </div>
                 </div>
-                    )}
 
                 <div className="stat-card">
                     <div className="stat-icon-wrapper stat-completed">
@@ -135,38 +132,23 @@ const ProjectsOverview: React.FC = () => {
             {/* Projects Grid */}
             {projects.length === 0 ? (
                 <div className="empty-state">
-                    <div className="empty-state-icon">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                        </svg>
-                    </div>
                     <h2 className="empty-state-title">Geen projecten gevonden</h2>
-                    <p className="empty-state-text">
-                        {isAdmin
-                            ? 'Klik op "Nieuw Project" om een project aan te maken'
-                            : 'Er zijn momenteel geen actieve projecten gekoppeld aan dit account'
-                        }
-                    </p>
+                    <p className="empty-state-text">Er zijn momenteel geen actieve projecten.</p>
                 </div>
             ) : (
                 <div className="projects-grid">
                     {projects.map((project) => {
-                        const daysAgo = Math.floor(
-                            (Date.now() - new Date(project.updatedAt).getTime()) / (1000 * 60 * 60 * 24)
-                        );
-                        const updateText = daysAgo === 0
-                            ? 'Vandaag'
-                            : daysAgo === 1
-                                ? '1 dag geleden'
-                                : `${daysAgo} dagen geleden`;
+                        // Veilige datum berekening
+                        const updatedAt = project.updatedAt ? new Date(project.updatedAt).getTime() : Date.now();
+                        const daysAgo = Math.floor((Date.now() - updatedAt) / (1000 * 60 * 60 * 24));
+                        const updateText = daysAgo === 0 ? 'Vandaag' : daysAgo === 1 ? '1 dag geleden' : `${daysAgo} dagen geleden`;
 
                         return (
                             <Link
                                 key={project.id}
-                                to={`/projects/${project.id}`}
+                                to={`/projects/${project.id}`} // FIX: Altijd naar deze route conform App.tsx
                                 className="project-card"
                             >
-                                {/* Card Header met Status Indicator */}
                                 <div className="project-card-header">
                                     <div
                                         className="status-indicator"
@@ -175,7 +157,6 @@ const ProjectsOverview: React.FC = () => {
                                     <StatusBadge status={project.status} />
                                 </div>
 
-                                {/* Project Info */}
                                 <div className="project-card-body">
                                     <h3 className="project-card-title">{project.title}</h3>
 
@@ -193,7 +174,12 @@ const ProjectsOverview: React.FC = () => {
                                             <svg className="meta-icon-card" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                             </svg>
-                                            <span>{project.client.name}</span>
+                                            {/* FIX: Crash-vrije weergave van de cliënt */}
+                                            <span>
+                                                {typeof project.client === 'string'
+                                                    ? project.client
+                                                    : (project.client as any)?.name || 'Onbekende Cliënt'}
+                                            </span>
                                         </div>
 
                                         {project.contactPerson && (
@@ -207,7 +193,6 @@ const ProjectsOverview: React.FC = () => {
                                     </div>
                                 </div>
 
-                                {/* Card Footer */}
                                 <div className="project-card-footer">
                                     <div className="footer-info">
                                         <svg className="footer-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
